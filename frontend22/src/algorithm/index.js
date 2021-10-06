@@ -1,0 +1,6 @@
+export {default as Navigation} from '../common/components/Navigation'
+export {default as BackTracking} from './pages/BackTracking'
+export {default as BruteForce} from './pages/BruteForce'
+export {default as DivideConquer} from './pages/DivideConquer'
+export {default as DynamicProgramming} from './pages/DynamicProgramming'
+export {default as Greedy} from './pages/Greedy'
