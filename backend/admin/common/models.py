@@ -6,7 +6,7 @@ import json
 import googlemaps
 
 @dataclass
-class DFrameGenerator(object):
+class ValueObject(object):
 
     train: object
     test: object
@@ -105,7 +105,7 @@ class Reader(ReaderBase):
         return pd.read_csv(f'{file}.csv', encoding='UTF-8', thousands=',', header=header)
 
     def xls(self, file, header, usecols):
-        return pd.read_excel(f'{file}.csv', header=header, usecols=usecols)
+        return pd.read_excel(f'{file}.xls', header=header, usecols=usecols)
 
     def json(self, file):
         return json.load(open(f'{file}.json', encoding='UTF-8'))
