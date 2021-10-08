@@ -127,9 +127,5 @@ class CrimeCctvModel():
 
     def merge_police_city(self):
         crime = self.create_crime_model()
-        reader = self.reader
-        vo = self.vo
-        police_city_file_name = reader.new_file(vo)
-        merge_police_city = reader.xls(police_city_file_name, 2, 'B,D,G,J,N')
-        merge_police_city.columns = ['구별', '인구수', '한국인', '외국인', '고령자']
+
         crime.to_csv(self.vo.context + 'new_data/police_city.csv')
