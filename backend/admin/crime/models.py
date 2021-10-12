@@ -95,9 +95,10 @@ class CrimeCctvModel():
         return population_model
 
     def merge_cctv_pop(self):
+        printer = self.printer
         cctv = self.create_cctv_model()
         pop = self.create_population_model()
-        merge = pd.merge(cctv, pop)
+        cctv_pop = pd.merge(cctv, pop)
         '''
         r이 -1.0과 -0.7 사이이면, 강한 음적 선형관계,
         r이 -0.7과 -0.3 사이이면, 뚜렷한 음적 선형관계,
@@ -107,7 +108,7 @@ class CrimeCctvModel():
         r이 +0.3과 +0.7 사이이면, 뚜렷한 양적 선형관계,
         r이 +0.7과 +1.0 사이이면, 강한 양적 선형관계
         '''
-        ic(merge.corr())
+        ic(cctv_pop.corr())
         '''
                            소계    2013년도 이전   2014년    2015년   2016년     인구수     한국인     외국인     고령자
           소계           1.000000   0.862756  0.450062  0.624402  0.593398  0.306342  0.304287 -0.023786  0.255196
@@ -121,11 +122,40 @@ class CrimeCctvModel():
           고령자          0.255196   0.105379  0.010233  0.372789  0.065784  0.932667  0.931636 -0.155381  1.000000
 
         '''
-        self.printer.dframe(merge)
-        merge.to_csv(self.vo.context + 'new_data/merge_cctv_population.csv')
-        return merge
+        printer.dframe(cctv_pop)
+        cctv_pop.to_csv(self.vo.context + 'new_data/merge_cctv_population.csv')
+        return cctv_pop
 
-    def merge_police_city(self):
-        crime = self.create_crime_model()
+    def sum_crime(self):
+        crime = pd.read_csv(self.vo.context + 'new_data/police_position.csv')
+        # gu_names = []
+        crime['발생'] = crime.loc[:, self.crime_columns].sum(axis=1)
+        crime['검거'] = crime.loc[:, self.arrest_columns].sum(axis=1)
+        crime.to_csv(self.vo.context + 'new_data/new_crime_arrest.csv')
+        # print(crime)
+        # print('='*100)
+        # crime.to_csv(self.vo.context+'new_data/new_crime_arrest.csv')
+        # print(crime)
+        # crime.groupby('구별,발생,검거').filter()
+        #
+        # crime = pd.read_csv(self.vo.context + 'new_data/police_position.csv')
+        # crime_group = crime.groupby(self.crime_columns).sum
+        # crime.to_csv(self.vo.context+'new_data/new_crime_arrest.csv')
+        # print(crime_group)
+        grouped = crime.groupby('구별')
+        # print(len(grouped.groups['강남구']))
+        # crime_columns = '살인 발생', '강도 발생', '강간 발생', '절도 발생', '폭력 발생'
+        # arrest_columns = '살인 검거', '강도 검거', '강간 검거', '절도 검거', '폭력 검거'
+        a = grouped['발생', '검거'].sum()
+        print(a)
+        a.to_csv(self.vo.context + 'new_data/a_new_crime_arrest.csv')
+        # print(crime)
+        # if len(grouped.groups['강남구']) == 2: pass
 
-        crime.to_csv(self.vo.context + 'new_data/police_city.csv')
+        crime = pd.read_csv(self.vo.context + 'new_data/police_position.csv')
+        crime['발생'] = crime.loc[:,self.crime_columns].sum(axis=1)
+        crime['검거'] = crime.loc[:,self.arrest_columns].sum(axis=1)
+        grouped = crime.groupby('구별')
+        crime_filter = grouped['발생','검거'].sum()
+        self.printer.dframe(crime_filter)
+        crime_filter.to_csv(self.vo.context+'new_data/new_crime_arrest.csv')
