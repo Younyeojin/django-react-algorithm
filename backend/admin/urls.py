@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/connect', include('admin.common.urls')),
     path('api/housing/', include('admin.housing.urls')),
     path('api/users/', include('admin.user.urls')),
-    path('api/crime/', include('admin.crime.urls'))
+    path('api/crime/', include('admin.crime.urls')),
+    path('api/crawling/', include('admin.crawling.urls'))
 
 ]
