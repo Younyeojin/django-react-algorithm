@@ -32,10 +32,11 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'admin.user',
-    'admin.housing',
     'admin.common',
-    # 'admin.crime',
-    # 'admin.crawling',
+    'admin.housing',
+    'admin.crime',
+    'admin.crawling',
+    'admin.tensor',
     'rest_framework',
     'corsheaders',
     'django.contrib.admin',

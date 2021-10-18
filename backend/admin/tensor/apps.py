@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CrawlingConfig(AppConfig):
+class CalculatorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'admin.crawling'
+    name = 'admin.tensor'
