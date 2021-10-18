@@ -1,4 +1,3 @@
-import nltk
+import sys
 if __name__ == '__main__':
-
-    nltk.download()
+    print(sys.version)
