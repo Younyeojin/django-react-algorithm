@@ -1,8 +1,7 @@
-import numpy as np
 import tensorflow as tf
-from matplotlib import pyplot as plt
 from tensorflow import keras
-
+import numpy as np
+import matplotlib.pyplot as plt
 from admin.common.models import ValueObject
 
 
@@ -10,56 +9,78 @@ class FashionClassification(object):
     def __init__(self):
         self.vo = ValueObject()
         self.vo.context = 'admin/tensor/data/'
-        self.class_name = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
-                           'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
-    def process(self):
-        self.get_data()
+        self.class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+                            'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
-    def hook(self):
-        images = self.get_data()
-        model = self.create_model()
-        model = self.train_model()
-        self.test_model(model)
-        arr = self.predict()
-        self.plot_image()
-        self.plot_value_array()
-        plt.savefig(f'{self.vo.context}fashion_random.png')
-
-    def get_data(self) -> []:
+    def fashion(self):
         fashion_mnist = keras.datasets.fashion_mnist
-        (X_train_full, y_train_full),(X_test, y_test) = fashion_mnist.load_data()
-        print(X_train_full.shape)
-        print(X_train_full.dtype)
-        print(f'훈련 행: {X_train_full.shape[0]} 열: {X_train_full.shape[1]}')
-        print(f'테스트 행: {X_test.shape[0]} 열: {X_test.shape[1]}')
+        (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+        # self.peek_datas(train_images, test_images, test_labels)
+        model = keras.Sequential([
+            keras.layers.Flatten(input_shape=[28, 28]),
+            keras.layers.Dense(128, activation="relu"),  # neron count 128
+            keras.layers.Dense(10, activation="softmax")  # 출력층 활성화함수는 softmax
+        ])
+        model.compile(optimizer='adam',
+                      loss='sparse_categorical_crossentropy',
+                      metrics=['accuracy'])
+        model.fit(train_images, train_labels, epochs=5)
+        # self.test_and_save_images(model, test_images, test_labels)
+        model.save(f'{self.vo.context}fashion_classification.h5')
+
+    def peek_datas(self, train_images, test_images, train_labels):
+        print(train_images.shape)
+        print(train_images.dtype)
+        print(f'훈련 행: {train_images.shape[0]} 열: {train_images.shape[1]}')
+        print(f'테스트 행: {test_images.shape[0]} 열: {test_images.shape[1]}')
         plt.figure()
-        plt.imshow(X_train_full[3])
+        plt.imshow(train_images[3])
         plt.colorbar()
         plt.grid(False)
-        plt.show
-        return [X_train_full, y_train_full, X_test, y_test]
+        plt.savefig(f'{self.vo.context}fashion_random.png')
+        plt.figure(figsize=(10, 10))
+        for i in range(25):
+            plt.subplot(5, 5, i + 1)
+            plt.xticks([])
+            plt.yticks([])
+            plt.grid(False)
+            plt.imshow(train_images[i], cmap=plt.cm.binary)
+            plt.xlabel(self.class_name[train_labels[i]])
+        plt.savefig(f'{self.vo.context}fashion_subplot.png')
 
-    def preprocess(self):
-        pass
+    def test_and_save_images(self, model, test_images, test_labels):
+        test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)  # verbose 는 학습하는 내부상황 보기 중 2번선택
+        predictions = model.predict(test_images)
+        i = 5
+        print(f'모델이 예측한 값 {np.argmax(predictions[i])}')
+        print(f'정답: {test_labels[i]}')
+        print(f'테스트 정확도: {test_acc}')
+        plt.figure(figsize=(6, 3))
+        plt.subplot(1, 2, 1)
+        test_image, test_predictions, test_label = test_images[i], predictions[i], test_labels[i]
+        plt.grid(False)
+        plt.xticks([])
+        plt.yticks([])
+        plt.imshow(test_image, cmap=plt.cm.binary)
+        test_pred = np.argmax(test_predictions)
 
-    def create_model(self) -> object:
-        pass
-
-    def train_model(self) -> object:
-        pass
-
-    def test_model(self) -> object:
-        pass
-
-    def predict(self):
-        pass
-
-    def plot_image(self):
-        pass
-
-    def plot_value_array(self):
-        pass
-
+        if test_pred == test_label:
+            color = 'blue'
+        else:
+            color = 'red'
+        plt.xlabel('{} : {} %'.format(self.class_names[test_pred],
+                                      100 * np.max(test_predictions),
+                                      self.class_names[test_label], color))
+        plt.subplot(1, 2, 2)
+        plt.grid(False)
+        plt.xticks([])
+        plt.yticks([])
+        this_plot = plt.bar(range(10), test_pred, color='#777777')
+        plt.ylim([0, 1])
+        test_pred = np.argmax(test_predictions)
+        this_plot[test_pred].set_color('red')
+        this_plot[test_label].set_color('blue')
+        plt.savefig(f'{self.vo.context}fashion_answer2.png')
 
 
 class AdalineGD(object):  # 적응형 선형 뉴런 분류기
@@ -134,17 +155,14 @@ class Perceptron(object):  # 퍼셉트론 분류기
         return np.dot(X, self.w_[1:]) + self.w_[0]
 
 
-
-
-
 class Calculator(object):
 
     def __init__(self):
         print(f'Tensorflow Version: {tf.__version__}')
 
     def process(self):
-        self.plus(4,8)
-        print('#'*100)
+        self.plus(4, 8)
+        print('*' * 100)
         self.mean()
 
     def plus(self, a, b):
