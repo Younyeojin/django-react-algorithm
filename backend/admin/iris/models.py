@@ -2,11 +2,17 @@ from sklearn.datasets import load_iris
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+
+from admin.common.models import ValueObject
+from admin.tensor.models import Perceptron
 
 
 class Iris(object):
     def __init__(self):
-        pass
+        self.vo = ValueObject()
+        self.vo.context = 'admin/iris/data/'
 
     def base(self):
         np.random.seed(0)
@@ -76,7 +82,27 @@ class Iris(object):
         '''
         # feature 별 중요도
         print(list(zip(train[features], clf.feature_importances_)))
+        ''' # 상관관계
+        [('sepal length (cm)', 0.08474010289429795), -- 꽃받침
+         ('sepal width (cm)', 0.022461263894393204), 
+         ('petal length (cm)', 0.4464851467243143),  -- 꽃잎
+         ('petal width (cm)', 0.4463134864869946)]
         '''
-        [('sepal length (cm)', 0.08474010289429795), ('sepal width (cm)', 0.022461263894393204), 
-         ('petal length (cm)', 0.4464851467243143), ('petal width (cm)', 0.4463134864869946)]
-        '''
+
+    def advanced(self):
+        iris = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data',
+                           header=None)
+        # 0:setosa  1:versicolor
+        iris_mini = iris.iloc[0:100, 4].values
+        y = np.where(iris_mini == 'Iris-setosa', -1, 1)  # 2진 분류는 -1과 1
+        X = iris.iloc[0:100, [0,2]].values               # X값 : 확률변수로 사용?
+        clf = Perceptron(eta = 0.1, n_iter=10)
+        self.draw_scatter(X)
+
+    def draw_scatter(self, X):
+        plt.scatter(X[:50, 0], X[:50, 1], color='red', marker='o', label='setosa')
+        plt.scatter(X[50:100, 0], X[50:100, 1], color='blue', marker='x', label='versicolor')
+        plt.xlabel('sepal length[cm]')
+        plt.ylabel('petal length[cm]')
+        plt.legend(loc='upper left')
+        plt.savefig(f'{self.vo.context}iris_scatter.png')

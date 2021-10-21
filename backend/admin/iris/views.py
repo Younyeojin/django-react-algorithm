@@ -9,3 +9,9 @@ from admin.iris.models import Iris
 def base(request):
     Iris().base()
     return JsonResponse({'Iris Base' : 'Success'})
+
+@api_view(['GET'])
+@parser_classes([JSONParser])
+def advanced(request):
+    Iris().advanced()
+    return JsonResponse({'Iris advanced' : 'Success'})
