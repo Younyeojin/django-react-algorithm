@@ -97,7 +97,8 @@ class Iris(object):
         y = np.where(iris_mini == 'Iris-setosa', -1, 1)  # 2진 분류는 -1과 1
         X = iris.iloc[0:100, [0,2]].values               # X값 : 확률변수로 사용?
         clf = Perceptron(eta = 0.1, n_iter=10)
-        self.draw_scatter(X)
+        # self.draw_scatter(X)
+        # self.draw_decision_regions(X, y, classifier=clf,  resolution=0.02)
 
     def draw_scatter(self, X):
         plt.scatter(X[:50, 0], X[:50, 1], color='red', marker='o', label='setosa')
@@ -106,3 +107,48 @@ class Iris(object):
         plt.ylabel('petal length[cm]')
         plt.legend(loc='upper left')
         plt.savefig(f'{self.vo.context}iris_scatter.png')
+
+''' # 시도했지만 실패 ㅜ
+    def draw_decision_regions(self, X, y,classifier, resolution=0.02):    # 경계선(오류값들을 보여줌) / 값이 오는 파라미터는 맨 마지막으로
+        # 마커와 컬러맵을 설정합니다
+        markers = ('s', 'x', 'o', '^', 'v')
+        colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
+        cmap = ListedColormap(colors[:len(np.unique(y))])
+
+        # 결정 경계를 그립니다
+        x1_min, x1_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+        x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+        """
+        numpy 모듈의 arrange 함수는 반열린구간 [start, stop) 에서
+        step 의 크기만큼 일정하게 떨어져 있는 숫자들을
+        array 형태로 반환하는 함수
+        meshgrid 함수는 사각형 영역을 구성하는
+        가로축의 점들과 세로축의 점을
+        나타내는 두 벡터를 인수로 받아서
+        이 사각형 영역을 이루는 조합을 출력한다.
+        결과는 그리드 포인트의 x 값만을 표시하는 행렬과
+        y 값만을 표시하는 행렬 두 개로 분리하여 출력한다
+        """
+        xx1, xx2 = np.meshgrid(np.arange(x1_min, x1_max, resolution),
+                               np.arange(x2_min, x2_max, resolution))
+        Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
+        Z = Z.reshape(xx1.shape)
+        plt.contourf(xx1, xx2, Z, alpha=0.3, cmap=cmap)
+        plt.xlim(xx1.min(), xx1.max())
+        plt.ylim(xx2.min(), xx2.max())
+
+        # 샘플의 산점도를 그립니다
+        for idx, cl in enumerate(np.unique(y)):
+            plt.scatter(x=X[y == cl, 0],
+                        y=X[y == cl, 1],
+                        alpha=0.8,
+                        c=colors[idx],
+                        marker=markers[idx],
+                        label=cl,
+                        edgecolor='black')
+        plt.xlabel('sepal length [cm]')
+        plt.ylabel('petal length [cm]')
+        plt.legend(loc='upper left')
+        plt.savefig(f'{self.vo.context}iris_decision_regions.png')
+'''
+
