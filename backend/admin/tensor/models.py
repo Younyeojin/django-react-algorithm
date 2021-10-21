@@ -1,8 +1,13 @@
-import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from admin.common.models import ValueObject
+from matplotlib.colors import ListedColormap
+from keras.datasets import mnist
+from keras.models import Sequential
+from keras.layers import Dense,Dropout
+import tensorflow as tf
+import os
 
 
 class TensorFunction(object):
