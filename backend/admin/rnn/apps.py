@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class Cv2Config(AppConfig):
+class RnnConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'admin.myCV2'
+    name = 'admin.rnn'
