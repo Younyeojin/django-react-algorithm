@@ -7,6 +7,6 @@ from admin.ai_trader.models import AITrader
 
 @api_view(['GET'])
 @parser_classes([JSONParser])
-def model_builder(request):
-    AITrader().model_builder()
-    return JsonResponse({'AI Trader model_builder': 'Success'})
+def process(request):
+    AITrader().process()
+    return JsonResponse({'AI Trader process': 'Success'})
