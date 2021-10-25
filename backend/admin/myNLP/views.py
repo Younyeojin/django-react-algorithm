@@ -13,6 +13,6 @@ def imdb_process(request):
 
 @api_view(['GET'])
 @parser_classes([JSONParser])
-def web_scraping(request):
-    NaverMovie().web_scraping()
-    return JsonResponse({'web_scraping' : 'Success'})
+def naver_process(request):
+    NaverMovie().naver_process()
+    return JsonResponse({'naver_process' : 'Success'})
