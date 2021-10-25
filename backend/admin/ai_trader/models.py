@@ -14,7 +14,7 @@ class AITrader(object):
     def __init__(self, action_space=3, model_name='AITrader'):
         self.vo = ValueObject()
         self.vo.context = 'admin/ai_trader/data/'
-        self.state_size = 10 # windwo_size
+        self.state_size = 10 # window_size
         self.action_space = action_space
         self.memory = deque(maxlen=2000)
         self.inventory = []
