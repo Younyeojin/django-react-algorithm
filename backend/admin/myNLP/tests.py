@@ -1,3 +1,33 @@
 from django.test import TestCase
 
 # Create your tests here.
+from admin.myNLP.models import NaverMovie
+
+if __name__ == '__main__':
+    n = NaverMovie()
+    n.model_fit()
+    n.classify('내 인생 최고의 영화')
+
+    # 방법1 range()
+    dc1 = {}
+    dc2 = {}
+    dc3 = {}
+    ls1 = ['10', '20', '30', '40', '50']
+    ls2 = [10, 20, 30, 40, 50]
+    # for i in range(0, len(ls1)):
+    #     dc1[ls1[i]] = ls2[i]
+    dc1 = {ls1[i]: ls2[i] for i in range(0, len(ls1))}
+    # 방법 zip()
+    # for i, j in zip(ls1, ls2):
+    #     dc2[i] = j
+    dc2 = {i: j for i, j in zip(ls1, ls2)}
+    # 방법 enumerate()
+    # for i, j in enumerate(ls1):
+    #     dc3[j] = ls2[i]
+    dc3 = {j: ls2[i] for i, j in enumerate(ls1)}
+    print('*' * 30)
+    print(dc1)
+    print('*' * 30)
+    print(dc2)
+    print('*' * 30)
+    print(dc3)
