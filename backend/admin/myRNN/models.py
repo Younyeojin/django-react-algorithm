@@ -46,7 +46,7 @@ from admin.common.models import ValueObject
 class MyRNN(object):
     def __init__(self):
         self.vo = ValueObject()
-        self.vo.context = 'admin/rnn/data/'
+        self.vo.context = 'admin/myRNN/data/'
 
 
     def kia_predict(self):

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'admin.tensor',
     'admin.myCV2',
     'admin.iris',
-    'admin.rnn',
+    'admin.myRNN',
     'admin.ai_trader',
     'rest_framework',
     'corsheaders',

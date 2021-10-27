@@ -15,6 +15,7 @@ import numpy as np
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 
+
 class GPUKoreanClassification(object):
     def __init__(self):
         pass
@@ -90,7 +91,7 @@ class NaverMovie(object):
             wr.writerow(result.keys())
             wr.writerow(result.values())
         driver.close()
-        
+
     def load_corpus(self):
         corpus = pd.read_table(f'{self.vo.context}review_train.csv', sep=',', encoding='UTF-8')
         corpus = np.array(corpus)
