@@ -13,14 +13,13 @@ from admin.user.serializers import UserSerializer
 @api_view(['GET','POST'])
 @parser_classes([JSONParser])
 def users(request):
-    if request.method == 'GET':
+    if request.method == 'GET':    # all
         all_users = User.objects.all()
         serializer = UserSerializer(all_users, many=True)
         return JsonResponse(data = serializer, safe = False)
     elif request.method == 'POST':
-        new_user = request.data['body']
-        ic(new_user)
-        serializer = UserSerializer(data = new_user['user'])
+        ic(request.data)
+        serializer = UserSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse({'result' : f'Welcome, {serializer.data.get("name")}'}, status=201)
