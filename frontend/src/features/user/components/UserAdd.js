@@ -4,11 +4,11 @@ import { useHistory  } from 'react-router-dom';
 
 export default function UserAdd() {
     const history = useHistory()
-    const SERVER = 'http://localhost:8000'
+    const SERVER = 'http://localhost:8000/api'
     const [join, setJoin] = useState({
-      username:'', password:'', email:'', name:'', birth:'', address:''
+        username:'', password:'', email:'', name:'', address: '', birth: new Date().toLocaleDateString()
     })
-    const {username, password, email, name, birth, address} = join
+    const {username, password, email, name, address, birth} = join
     const handleChange = e => {
         const { value, name } = e.target
         setJoin({
