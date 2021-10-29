@@ -34,13 +34,29 @@ def users(request):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET','POST'])
-@parser_classes([JSONParser])
-def users(request, id):
+@api_view(['DELETE'])
+def remove(request, id):
     pass
 
 
 @api_view(['POST'])
-@parser_classes([JSONParser])
 def login(request):
-    pass
+    print('+++++ try 밖에 있음 +++++')
+    try:
+        loginUser = request.data
+        ic(loginUser)
+        print(f'>>>>>>>>>>>{type(loginUser)}')
+        dbUser = User.objects.get(pk=loginUser.username)
+        if loginUser.password == dbUser['password']:
+            print('*********** 로그인 성공')
+            userSerializer = UserSerializer(dbUser, many=False)
+            ic(userSerializer)
+            return JsonResponse(data=UserSerializer.data, safe=False)
+        else:
+            print('비밀번호 오류')
+            return JsonResponse(data={'result':'PASSWORD-FAIL'}, status=201)
+    except User.DoesNotExist:
+        print('*' * 50)
+        print('에러 발생')
+        return JsonResponse(data={'result':'USERNAME-FAIL'}, status=201)
+

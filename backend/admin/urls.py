@@ -1,5 +1,4 @@
 """admin URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
@@ -19,14 +18,15 @@ from django.urls import path, include
 urlpatterns = [
     path('api/connect', include('admin.common.urls')),
     path('api/housing/', include('admin.housing.urls')),
-    path('api/users', include('admin.user.urls')),
+    path('api/users/', include('admin.user.urls')),
     path('api/crime/', include('admin.crime.urls')),
-    path('api/crawling/', include('admin.crawling.urls')),
     path('api/tensor/', include('admin.tensor.urls')),
+    path('api/crawling/', include('admin.crawling.urls')),
     path('api/iris/', include('admin.iris.urls')),
     path('api/myCV2/', include('admin.myCV2.urls')),
     path('api/myRNN/', include('admin.myRNN.urls')),
     path('api/ai_trader/', include('admin.ai_trader.urls')),
     path('api/myNLP/', include('admin.myNLP.urls')),
+    path('api/myGAN/', include('admin.myGAN.urls')),
 
 ]

@@ -4,7 +4,7 @@ import { useHistory  } from 'react-router-dom';
 
 export default function UserAdd() {
     const history = useHistory()
-    const SERVER = 'http://localhost:8000/api'
+    const SERVER = 'http://localhost:8000'
     const [join, setJoin] = useState({
       username:'', password:'', email:'', name:'', birth:'', address:''
     })
